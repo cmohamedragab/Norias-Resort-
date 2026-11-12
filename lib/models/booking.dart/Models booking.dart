@@ -86,36 +86,31 @@ class Booking {
   });
 
   // إجمالي المبلغ بعد الخصم
-  double get netAmount {
-    return totalAmount - discount;
-  }
+  double get netAmount => totalAmount - discount;
 
-  // إجمالي المبالغ المحصلة
+  // إجمالي المدفوع
   double get paidAmount {
-    return payments.fold(
-      0,
+    return payments.fold<double>(
+      0.0,
       (sum, payment) => sum + payment.amount,
     );
   }
 
   // المبلغ المتبقي
-  double get remainingAmount {
-    return netAmount - paidAmount;
-  }
+  double get remainingAmount => netAmount - paidAmount;
 
   // عدد الليالي
-  int get nights {
-    return departureDate.difference(arrivalDate).inDays;
-  }
+  int get nights =>
+      departureDate.difference(arrivalDate).inDays;
 
-  // تسجيل دفعة جديدة
+  // إضافة دفعة جديدة
   Booking addPayment(BookingPayment payment) {
     if (payment.amount <= 0) {
       throw ArgumentError('مبلغ الدفع يجب أن يكون أكبر من صفر');
     }
 
     if (payment.amount > remainingAmount) {
-      throw ArgumentError('مبلغ الدفع أكبر من المبلغ المتبقي');
+      throw ArgumentError('مبلغ الدفع أكبر من المتبقي');
     }
 
     return copyWith(
